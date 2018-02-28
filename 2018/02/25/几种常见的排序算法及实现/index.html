@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="js," />
+  <meta name="keywords" content="js,算法," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="几种常见的排序算法及实现排序算法大体可以分为两种：    一种是比较排序，时间复杂度O(nlogn)~O(n^2)，主要有：冒泡排序，选择排序，插入排序，归并排序，快速排序，堆排序    另一中是非比较排序，时间复杂度可以达到O(n)，主要有：计数排序，基数排序，桶排序 比较排序常见排序算法的性能列表:    排序方法 平均情况 最好情况 最坏情况 辅助空间 稳定性     冒泡排序 O(n^2)">
-<meta name="keywords" content="js">
+<meta name="keywords" content="js,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="几种常见的排序算法及实现">
 <meta property="og:url" content="http://yoursite.com/2018/02/25/几种常见的排序算法及实现/index.html">
@@ -94,7 +94,8 @@
 <meta property="og:image" content="http://yoursite.com/upload/images/20180222/06.gif">
 <meta property="og:image" content="http://yoursite.com/upload/images/20180222/07.gif">
 <meta property="og:image" content="http://yoursite.com/upload/images/20180222/08.gif">
-<meta property="og:updated_time" content="2018-02-24T17:19:06.750Z">
+<meta property="og:image" content="http://yoursite.com/upload/images/20180222/09.gif">
+<meta property="og:updated_time" content="2018-02-25T16:20:10.996Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="几种常见的排序算法及实现">
 <meta name="twitter:description" content="几种常见的排序算法及实现排序算法大体可以分为两种：    一种是比较排序，时间复杂度O(nlogn)~O(n^2)，主要有：冒泡排序，选择排序，插入排序，归并排序，快速排序，堆排序    另一中是非比较排序，时间复杂度可以达到O(n)，主要有：计数排序，基数排序，桶排序 比较排序常见排序算法的性能列表:    排序方法 平均情况 最好情况 最坏情况 辅助空间 稳定性     冒泡排序 O(n^2)">
@@ -486,7 +487,20 @@
 </ol>
 <p><img src="/upload/images/20180222/08.gif" alt="Sorting_quicksort_anim.gif"></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortByQuick</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">swap</span>(<span class="params">array, i, j</span>) </span>&#123;</span><br><span class="line">    	<span class="keyword">var</span> temp = array[i];</span><br><span class="line">    	array[i] = array[j];</span><br><span class="line">    	array[j] = temp;</span><br><span class="line">  	&#125;</span><br><span class="line">  	<span class="comment">/*</span></span><br><span class="line"><span class="comment">  	*	分区操作</span></span><br><span class="line"><span class="comment">  	*	@iLeft , 子数组的起始下标</span></span><br><span class="line"><span class="comment">  	*	@iRight , 子数组的结束下标</span></span><br><span class="line"><span class="comment">  	*/</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">partition</span>(<span class="params">array,iLeft,iRight</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> pivot = array[iRight];	<span class="comment">//选择最后一个元素作为基准</span></span><br><span class="line">		<span class="keyword">var</span> tmpIndex = iLeft;	<span class="comment">//前一个子数组最后一项的下标</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//遍历基准以外的元素</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">var</span> i = iLeft; i &lt; iRight; i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(array[i] &lt;= pivot)&#123;	<span class="comment">//将小于基准的项移到前一个子数组中</span></span><br><span class="line">				swap(array,i,tmpIndex);</span><br><span class="line">				tmpIndex++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//将基准数据移到前一个子数组的末尾</span></span><br><span class="line">		swap(array,tmpIndex,iRight);</span><br><span class="line">		<span class="keyword">return</span> tmpIndex;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	*	递归实现快速排序</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">quickSortRecursion</span>(<span class="params">array,iLeft,iRight</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(iLeft &gt;= iRight)</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> pivotIndex = partition(array,iLeft,iRight);</span><br><span class="line">		quickSortRecursion(array,iLeft,pivotIndex - <span class="number">1</span>);</span><br><span class="line">		quickSortRecursion(array,pivotIndex + <span class="number">1</span>,iRight);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	*	迭代实现快速排序</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">quickSortIteration</span>(<span class="params">array,iLeft,iRight</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> partitionArray = <span class="keyword">new</span> <span class="built_in">Array</span>();	<span class="comment">//存储每次分区操作的 left 和 right</span></span><br><span class="line">			partitionArray.push([iLeft,iRight]) ;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">while</span>(partitionArray.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">			<span class="keyword">var</span> tmp = partitionArray.pop(),</span><br><span class="line">				low = tmp[<span class="number">0</span>],</span><br><span class="line">				high = tmp[<span class="number">1</span>];</span><br><span class="line">			<span class="keyword">if</span>(low &lt; high)&#123; </span><br><span class="line">				<span class="keyword">var</span> pivotIndex = partition(array,low,high);</span><br><span class="line">				partitionArray.push([low,pivotIndex - <span class="number">1</span>]);	</span><br><span class="line">				partitionArray.push([pivotIndex + <span class="number">1</span>,high]);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">sort</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> array = [];</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">			<span class="keyword">var</span> a = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">100</span> );</span><br><span class="line">			array.push(a);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'原始数组：'</span>+array);</span><br><span class="line">		<span class="comment">// quickSortRecursion(array,0,array.length - 1);</span></span><br><span class="line">		quickSortIteration(array,<span class="number">0</span>,array.length - <span class="number">1</span>);</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'排序数组：'</span>+ array);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	sort();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="非比较排序"><a href="#非比较排序" class="headerlink" title="非比较排序"></a>非比较排序</h2>
+<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><p>插入排序在统一的思想下，根据具体的实现方法又可以分为：直接插入排序，二分插入排序，希尔排序三种。</p>
+<h4 id="直接插入排序"><a href="#直接插入排序" class="headerlink" title="直接插入排序"></a>直接插入排序</h4><p>直接插入排序就是每一步都将一个待排数据按其大小插入到已经排序的数据中的适当位置，直到全部插入完毕。 该排序不适用于数据量过大的情况。</p>
+<p>算法详细步骤描述如下（数据从小到大排序）：</p>
+<ol>
+<li>从第一个元素开始，该元素可以认为已经被排序</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描</li>
+<li>如果该元素（已排序）大于新元素，将该元素移到下一位置</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置</li>
+<li>将新元素插入到该位置后</li>
+<li>重复步骤2~5</li>
+</ol>
+<p><img src="/upload/images/20180222/09.gif" alt="Insertion_sort_animation.gif"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortByInsert</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">insertSort</span>(<span class="params">array</span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i&lt; array.length ;i++)&#123;</span><br><span class="line">			<span class="keyword">var</span> temp = array[i];</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">var</span> j = i ; j &gt;= <span class="number">0</span>; j--)&#123;</span><br><span class="line">				<span class="keyword">if</span>(array[j - <span class="number">1</span>] &gt; temp)&#123;</span><br><span class="line">					array[j] = array[j<span class="number">-1</span>];</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span>&#123;</span><br><span class="line">					array[j] = temp;</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> array = [];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">		<span class="keyword">var</span> a = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">100</span> );</span><br><span class="line">		array.push(a);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'原始数组：'</span>+array);</span><br><span class="line">	insertSort(array);</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'排序数组：'</span>+ array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="二分插入排序"><a href="#二分插入排序" class="headerlink" title="二分插入排序"></a>二分插入排序</h4><h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><h2 id="非比较排序"><a href="#非比较排序" class="headerlink" title="非比较排序"></a>非比较排序</h2>
       
     </div>
     
@@ -504,6 +518,8 @@
         <div class="post-tags">
           
             <a href="../../../../tags/js/" rel="tag"># js</a>
+          
+            <a href="../../../../tags/算法/" rel="tag"># 算法</a>
           
         </div>
       
@@ -552,6 +568,11 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
 
   
 
@@ -627,7 +648,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -676,7 +697,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#几种常见的排序算法及实现"><span class="nav-number">1.</span> <span class="nav-text">几种常见的排序算法及实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#比较排序"><span class="nav-number">1.1.</span> <span class="nav-text">比较排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#冒泡排序"><span class="nav-number">1.1.1.</span> <span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单选择排序"><span class="nav-number">1.1.2.</span> <span class="nav-text">简单选择排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆排序"><span class="nav-number">1.1.3.</span> <span class="nav-text">堆排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归并排序"><span class="nav-number">1.1.4.</span> <span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速排序"><span class="nav-number">1.1.5.</span> <span class="nav-text">快速排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非比较排序"><span class="nav-number">1.2.</span> <span class="nav-text">非比较排序</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#几种常见的排序算法及实现"><span class="nav-number">1.</span> <span class="nav-text">几种常见的排序算法及实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#比较排序"><span class="nav-number">1.1.</span> <span class="nav-text">比较排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#冒泡排序"><span class="nav-number">1.1.1.</span> <span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单选择排序"><span class="nav-number">1.1.2.</span> <span class="nav-text">简单选择排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆排序"><span class="nav-number">1.1.3.</span> <span class="nav-text">堆排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归并排序"><span class="nav-number">1.1.4.</span> <span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速排序"><span class="nav-number">1.1.5.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入排序"><span class="nav-number">1.1.6.</span> <span class="nav-text">插入排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接插入排序"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">直接插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二分插入排序"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">二分插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔排序"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">希尔排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非比较排序"><span class="nav-number">1.2.</span> <span class="nav-text">非比较排序</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -848,6 +869,14 @@
 
 
 
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2158356"></script>
+      <!-- UY END -->
+    
   
 
 
