@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="../../../../lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="../../../../lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="../../../../css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="../../../../images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="js webpack 模块化," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言webpack的配置的确是蛮复杂的，webpack官方文档对于我这种初学者真的算不上友好。但模块化开发这是一种趋势，而且随着公司项目的开展，我也越来越意识到这种开发方式带来的好处，代码逻辑超清晰，维护方便。对于一个还在不断增长的项目，这是一个不得不回归的选择。 ok，言归正传，本篇文章基于的技术方案是vue + webpack，由于本人也是在不断的摸索学习中，这篇文章主要是对近期的学习做一个终">
+<meta name="keywords" content="js webpack 模块化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack打包优化学习">
+<meta property="og:url" content="http://yoursite.com/2018/05/13/webpack打包优化学习/index.html">
+<meta property="og:site_name" content="奥利奥">
+<meta property="og:description" content="前言webpack的配置的确是蛮复杂的，webpack官方文档对于我这种初学者真的算不上友好。但模块化开发这是一种趋势，而且随着公司项目的开展，我也越来越意识到这种开发方式带来的好处，代码逻辑超清晰，维护方便。对于一个还在不断增长的项目，这是一个不得不回归的选择。 ok，言归正传，本篇文章基于的技术方案是vue + webpack，由于本人也是在不断的摸索学习中，这篇文章主要是对近期的学习做一个终">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-13T13:56:58.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack打包优化学习">
+<meta name="twitter:description" content="前言webpack的配置的确是蛮复杂的，webpack官方文档对于我这种初学者真的算不上友好。但模块化开发这是一种趋势，而且随着公司项目的开展，我也越来越意识到这种开发方式带来的好处，代码逻辑超清晰，维护方便。对于一个还在不断增长的项目，这是一个不得不回归的选择。 ok，言归正传，本篇文章基于的技术方案是vue + webpack，由于本人也是在不断的摸索学习中，这篇文章主要是对近期的学习做一个终">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/13/webpack打包优化学习/"/>
+
+
+
+
+
+  <title>webpack打包优化学习 | 奥利奥</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">奥利奥</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="奥利奥利奥">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="../../../../images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="奥利奥">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webpack打包优化学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-13T21:55:33+08:00">
+                2018-05-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>webpack的配置的确是蛮复杂的，<a href="https://doc.webpack-china.org/concepts/" target="_blank" rel="noopener">webpack</a>官方文档对于我这种初学者真的算不上友好。但模块化开发这是一种趋势，而且随着公司项目的开展，我也越来越意识到这种开发方式带来的好处，代码逻辑超清晰，维护方便。对于一个还在不断增长的项目，这是一个不得不回归的选择。</p>
+<p>ok，言归正传，本篇文章基于的技术方案是vue + webpack，由于本人也是在不断的摸索学习中，这篇文章主要是对近期的学习做一个终结，会不定期的进行更新修改。</p>
+<h3 id="ProvidePlugin"><a href="#ProvidePlugin" class="headerlink" title="ProvidePlugin"></a>ProvidePlugin</h3><h4 id="关于jQuery"><a href="#关于jQuery" class="headerlink" title="关于jQuery"></a>关于jQuery</h4><p>jQuery，前端世界里的绝对利器，操作起来dom如行云流水，基于此，前端er们创造了很多轮子。虽然现在说MVVM，说NPM包管理，但基于jQuery的N多第三方插件很多又不能轻易的舍弃，所以需要在webpack中兼容一下，使基于jQuery的第三方插件顺利的运行起来。<br>先来看一下这些轮子的比较经典的写法,以zTree为例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">$</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> settings = &#123;&#125;, roots = &#123;&#125;, caches = &#123;&#125;；</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    $.fn.zTree = &#123;</span><br><span class="line">        getZTreeObj:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)(jQuery)</span><br></pre></td></tr></table></figure></p>
+<p>建立一个立即执行函数fn，在fn内部定义各种变量，以避免污染全局环境，fn接受的一个参数就是jQuery对象，因为默认jQuery是已经被引入作为全局对象的，所以这里可以直接使用<code>jQuery</code>。</p>
+<p>这种写法在模块化开发的时候就有一种问题，因为模块化开发是竭力避免全局变量的，当我们<code>import $ from &#39;jquery&#39;</code>的时候只是在该文件下有一个变量<code>$</code>可以使用，在打包的时候<code>$</code>被处理为局部变量，并没有全局的<code>jQuery</code>对象。所以引用zTree插件的时候不可避免的会出现<code>$ is undefined</code>的情况。</p>
+<p>了解了这种情况，可以想到两种解决方案：<br>1、声明一个全局变量<code>jQuery</code><br>2、在webpack打包的时候，遇到‘jQuery’就自动require一把’jquery’的npm包</p>
+<p>第一种解决方案可以简单粗暴的在HTML文件中script一个jQuery文件，这里不再讨论。<br>对于第二种解决方案，可以使用<a href="https://doc.webpack-china.org/plugins/provide-plugin/#src/components/Sidebar/Sidebar.jsx" target="_blank" rel="noopener">ProvidePlugin</a>，这是webpack提供的一种内置插件，其功能旨在</p>
+<blockquote>
+<p>自动加载模块，而不必到处 import 或 require 。</p>
+</blockquote>
+<p>其配置写法为<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">plugins:[</span><br><span class="line">    <span class="keyword">new</span> webpack.ProvidePlugin(&#123;</span><br><span class="line">      $: <span class="string">'jquery'</span>,</span><br><span class="line">      jQuery: <span class="string">'jquery'</span>,</span><br><span class="line">      <span class="string">'window.$'</span>:<span class="string">'jquery'</span>,</span><br><span class="line">      <span class="string">'window.jQuery'</span>:<span class="string">'jquery'</span></span><br><span class="line">    &#125;)</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>需要说明的是，该插件并不是生成全局变量，而是在编译的时候遇到指定<code>key</code>值的时候，就import对应的<code>value</code>模块。例如在zTree插件中遇到立即执行函数的参数<code>(jQuery)</code>时就会先<code>import jQuery from &#39;jquery&#39;</code>,接下来在插件中的代码就可以正常执行了。</p>
+<p>配置中用了四种key值对应同一种jquery，基本涵盖了现在各种插件引用jQuery的形式。</p>
+<h3 id="webpack-bundle-analyzer"><a href="#webpack-bundle-analyzer" class="headerlink" title="webpack-bundle-analyzer"></a>webpack-bundle-analyzer</h3><p>webpack打包是一个精益求精的过程，在不断优化的过程中，我们需要一些辅助工具。官方文档上推荐了几种对打包结果进行分析的工具，<a href="https://doc.webpack-china.org/guides/code-splitting/#bundle-%E5%88%86%E6%9E%90-bundle-analysis-" target="_blank" rel="noopener">这里是地址</a>。</p>
+<p>我使用过的是<a href="https://github.com/webpack-contrib/webpack-bundle-analyzer" target="_blank" rel="noopener">webpack-bundle-analyzer</a>，官方介绍这是一款分析 bundle 内容的插件及CLI 工具，以便捷的、交互式、可缩放的树状图形式展现给用户。</p>
+<p>使用方式也很方便，首先进行配置：在配置文件中，引入npm包之后，在plugins属性中插入一个实例。如何调用：cli工具中，使用命令<code>npm run build --report</code>。</p>
+<h3 id="CommonsChunkPlugin"><a href="#CommonsChunkPlugin" class="headerlink" title="CommonsChunkPlugin"></a>CommonsChunkPlugin</h3><p>webpack打包的时候会从入口文件开始进行搜寻，所有引用的文件都会被打包进一个文件里，所以当项目比较大的时候，最后生成的文件会很大，在网络传输时会比较耗时。而一个浏览器可以同时有个多个并发请求（不同浏览器的并发数不一样，但目前最大值应该是8个），所以可以考虑在打包的时候生成多个文件，充分利用浏览器的并发数，减少网络传输的时间。</p>
+<p><a href="https://doc.webpack-china.org/plugins/commons-chunk-plugin/#src/components/Sidebar/Sidebar.jsx" target="_blank" rel="noopener">CommonsChunkPlugin</a>是webpack的内置插件，其功能就是在打包的时候根据<strong>指定条件</strong>生成一些独立的文件。</p>
+<p>插件的配置属性在官方文档上都有说明，但在刚接触的时候并没有很具象的一种认识。经过一番摸索，记录点个人认识。</p>
+<ul>
+<li><strong>name</strong> : 指定生成的独立文件的名字。</li>
+<li><strong>chunks</strong>：指定的打包条件将在这个属性指定的文件中进行遍历并找到符合条件的打包文件进行打包</li>
+<li><strong>minChunks</strong>:该属性指定打包条件。属性值可以为 <code>number | Infinity | function(module,count){}</code>。</li>
+</ul>
+<h4 id="minChunks"><a href="#minChunks" class="headerlink" title="minChunks"></a>minChunks</h4><p>minChunks 属性的值为方法时，可以对打包进行一些更精细的操作，在方法内部进行任意操作，结果返回一个Boolean值。<br>该插件每配置一次只能满足一种条件，如果需要根据多种条件打包出多个文件，可以进行多次引用该插件进行配置。</p>
+<h4 id="webpack-manifest"><a href="#webpack-manifest" class="headerlink" title="webpack manifest"></a>webpack manifest</h4><p>打包生成文件之后，如果文件带有hash值，就会发现，每次打包文件的hash值都是有变化的，这不利于浏览器的缓存。所以在打包的时候会指定生成一份<code>mainfest.js</code>的文件。该文件的主要内容是webpack runtime的代码。<br>hash值每次变化的原因就是，在没有特殊指定的情况下，webpack runtime 的代码会被同时打包进vendor.js中.</p>
+<p><a href="https://doc.webpack-china.org/concepts/manifest/#src/components/Sidebar/Sidebar.jsx" target="_blank" rel="noopener">mainfest</a></p>
+<blockquote>
+<p>webpack runtime（webpackBootstrap）代码不多，主要包含以下几个功能：</p>
+<ol>
+<li>全局<code>webpackJsonp</code>方法，模块读取函数，用来区分模块是否加载，并调用<code>__webpack_require__</code>函数；</li>
+<li>私有<code>__webpack-require__</code>方法，模块初始化执行执行函数，并给执行过的模块做标记；</li>
+<li>异步chunk加载函数（用script标签异步加载），加载的chunk内容均被<code>webpackJsonp</code>包裹的，script加载成功会直接执行。这个函数还包含了所有生成的chunks的路径。</li>
+<li>对ES6 Modules的默认导出（export default）做处理。</li>
+</ol>
+</blockquote>
+<h3 id="HtmlWebpackPlugin"><a href="#HtmlWebpackPlugin" class="headerlink" title="HtmlWebpackPlugin"></a>HtmlWebpackPlugin</h3><p><a href="https://doc.webpack-china.org/plugins/html-webpack-plugin/#src/components/Sidebar/Sidebar.jsx" target="_blank" rel="noopener">HtmlWebpackPlugin</a>这个插件可以帮助我们生成一个HTML5的文件，结合上一个插件（CommonsChunkPlugin）会很有用。<code>CommonChunksPlugin</code>插件打包生成的所有js、css文件都会被添加到html文件中，但是生成的js文件中要求必须首先将包含webpack runtime的文件引入进去，否则所有的js文件都无法正常执行了。</p>
+<p>该插件的配置项：</p>
+<ul>
+<li><strong>chunks</strong> : 包含所有被引入的js文件</li>
+<li><strong>chunksSortMode</strong> ：指定被引用js在html文件中的排序方式。值为<code>&#39;none&#39; | &#39;auto&#39; | &#39;dependency&#39; | &#39;manual&#39; | {Function}</code></li>
+</ul>
+<p>当选中manual时，将按照chunks中的书写顺序进行引入，数组中的第一个将被首先引入。</p>
+<p>###结尾<br>未完待续，持续更新完善中。。。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="../../../../tags/js-webpack-模块化/" rel="tag"># js webpack 模块化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="../../../02/25/几种常见的排序算法及实现/" rel="next" title="几种常见的排序算法及实现">
+                <i class="fa fa-chevron-left"></i> 几种常见的排序算法及实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="../../../../images/avatar.jpg"
+                alt="奥利奥利奥" />
+            
+              <p class="site-author-name" itemprop="name">奥利奥利奥</p>
+              <p class="site-description motion-element" itemprop="description">我有一所房子，面朝大海，春暖花开</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="../../../../archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/aoliaoliao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:492140398@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ProvidePlugin"><span class="nav-number">2.</span> <span class="nav-text">ProvidePlugin</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于jQuery"><span class="nav-number">2.1.</span> <span class="nav-text">关于jQuery</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack-bundle-analyzer"><span class="nav-number">3.</span> <span class="nav-text">webpack-bundle-analyzer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CommonsChunkPlugin"><span class="nav-number">4.</span> <span class="nav-text">CommonsChunkPlugin</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#minChunks"><span class="nav-number">4.1.</span> <span class="nav-text">minChunks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#webpack-manifest"><span class="nav-number">4.2.</span> <span class="nav-text">webpack manifest</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HtmlWebpackPlugin"><span class="nav-number">5.</span> <span class="nav-text">HtmlWebpackPlugin</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">奥利奥利奥</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="../../../../js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="../../../../js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="../../../../js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="../../../../js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2158356"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
